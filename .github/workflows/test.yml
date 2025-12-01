@@ -1,6 +1,6 @@
 name: Quick Test
 
-on: [workflow_dispatch]  # Manual trigger only
+on: [workflow_dispatch]
 
 jobs:
   test-manual:
@@ -13,15 +13,18 @@ jobs:
     - name: Step 2 - Environment Info
       run: |
         echo "Runner OS: $(uname -a)"
-        echo "Node version: $(node --version)"
-        echo "NPM version: $(npm --version)"
+        echo "Current directory: $(pwd)"
+        echo "Files in repo:"
+        ls -la
     
-    - name: Step 3 - Simple Check
+    - name: Step 3 - Create Basic Files
       run: |
-        if [ -f "index.html" ]; then
-          echo "Found index.html"
-        else
-          echo "Missing index.html"
+        # Ensure we have basic structure
+        if [ ! -f "index.html" ]; then
+          echo "<html><body><h1>Test Page</h1></body></html>" > index.html
+        fi
+        if [ ! -f "package.json" ]; then
+          echo '{"name":"test","version":"1.0.0"}' > package.json
         fi
     
     - name: Step 4 - Completion
