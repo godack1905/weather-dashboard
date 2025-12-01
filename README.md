@@ -4,7 +4,7 @@ A weather dashboard application with automated CI/CD pipeline using GitHub Actio
 
 ## Features
 
-- Real-time weather display (simulated)
+- Real-time weather display (connected to an API)
 - Responsive design
 - Automated testing
 - Continuous deployment to GitHub Pages
