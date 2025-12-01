@@ -315,6 +315,142 @@ footer a:hover {
     color: #94a3b8;
 }
 
+.forecast-section {
+    margin-top: 30px;
+    padding: 25px;
+    background: #f8fafc;
+    border-radius: 15px;
+    border: 2px solid #e2e8f0;
+}
+
+.forecast-section h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+.forecast-section h3 i {
+    color: #4f46e5;
+}
+
+.forecast-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.forecast-day {
+    flex: 1;
+    min-width: 130px;
+    max-width: 150px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+    border: 1px solid #e2e8f0;
+}
+
+.forecast-day:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.forecast-day .date {
+    font-weight: 600;
+    color: #4f46e5;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.forecast-day .temp {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #1e293b;
+}
+
+.forecast-day .description {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-top: 5px;
+}
+
+.forecast-day i {
+    font-size: 1.8rem;
+    margin: 10px 0;
+}
+
+/* Loading Spinner */
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: #64748b;
+    font-style: italic;
+}
+
+/* Error Message */
+.error-message {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    border-left: 4px solid #dc2626;
+}
+
+/* Responsive Forecast */
+@media (max-width: 768px) {
+    .forecast-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .forecast-day {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* API Key Input */
+.api-key-input {
+    background: #fffbeb;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border-left: 4px solid #f59e0b;
+}
+
+.api-key-input input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+}
+
+.api-key-input button {
+    background: #f59e0b;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .weather-header {
