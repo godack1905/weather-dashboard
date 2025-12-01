@@ -2,13 +2,13 @@
   "name": "weather-dashboard",
   "version": "1.0.0",
   "description": "A weather dashboard with automated CI/CD pipeline",
-  "main": "index.html",
   "scripts": {
     "start": "npx http-server -p 8080",
-    "test": "node tests/weather.test.js",
-    "lint": "npx eslint app.js --no-eslintrc --env browser",
-    "build": "echo 'Building project...' && mkdir -p dist && cp -r *.html *.css *.js tests/ dist/ || true",
-    "validate-html": "echo 'HTML validation would run here'"
+    "dev": "npx http-server -p 3000 -c-1",
+    "build": "node build.js",
+    "build:local": "node build.js && echo 'Local build complete. Run: npm start'",
+    "test": "node weather-test.js",
+    "deploy": "npm run build && echo 'Ready for deployment!'"
   },
   "keywords": ["weather", "dashboard", "ci-cd", "github-actions"],
   "author": "Your Name",
