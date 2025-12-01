@@ -1,0 +1,28 @@
+name: Quick Test
+
+on: [workflow_dispatch]  # Manual trigger only
+
+jobs:
+  test-manual:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Step 1 - Hello World
+      run: echo "This is a manually triggered workflow!"
+    
+    - name: Step 2 - Environment Info
+      run: |
+        echo "Runner OS: $(uname -a)"
+        echo "Node version: $(node --version)"
+        echo "NPM version: $(npm --version)"
+    
+    - name: Step 3 - Simple Check
+      run: |
+        if [ -f "index.html" ]; then
+          echo "Found index.html"
+        else
+          echo "Missing index.html"
+        fi
+    
+    - name: Step 4 - Completion
+      run: echo "Workflow completed successfully!"

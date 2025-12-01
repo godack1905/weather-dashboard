@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌤️ Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-sun"></i> Weather Dashboard</h1>
+            <p class="subtitle">Real-time weather updates with automated deployment</p>
+        </header>
+
+        <main>
+            <div class="search-section">
+                <div class="search-box">
+                    <input type="text" id="city-input" placeholder="Enter city name (e.g., London)" value="London">
+                    <button id="search-btn"><i class="fas fa-search"></i> Get Weather</button>
+                    <button id="use-location-btn"><i class="fas fa-location-arrow"></i> Use My Location</button>
+                </div>
+                <div class="last-updated">
+                    Last updated: <span id="last-updated">Never</span>
+                    <small>Auto-updates every 5 minutes</small>
+                </div>
+            </div>
+
+            <div class="weather-card">
+                <div class="weather-header">
+                    <h2 id="city-name">Loading...</h2>
+                    <div class="temp-large" id="temperature">--°C</div>
+                </div>
+                
+                <div class="weather-details">
+                    <div class="weather-icon">
+                        <i class="fas fa-sun" id="weather-icon"></i>
+                        <span id="weather-description">Sunny</span>
+                    </div>
+                    
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-temperature-low"></i>
+                            <div>
+                                <span class="label">Feels Like</span>
+                                <span class="value" id="feels-like">--°C</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-tint"></i>
+                            <div>
+                                <span class="label">Humidity</span>
+                                <span class="value" id="humidity">--%</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-wind"></i>
+                            <div>
+                                <span class="label">Wind Speed</span>
+                                <span class="value" id="wind-speed">-- km/h</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <div>
+                                <span class="label">Pressure</span>
+                                <span class="value" id="pressure">-- hPa</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="update-info">
+                    <p><i class="fas fa-sync-alt"></i> This dashboard is automatically deployed using GitHub Actions CI/CD</p>
+                    <p>Commit Hash: <code id="commit-hash">N/A</code> | Deployed: <span id="deploy-time">N/A</span></p>
+                </div>
+            </div>
+
+            <div class="ci-cd-info">
+                <h3><i class="fas fa-robot"></i> CI/CD Pipeline Status</h3>
+                <div class="pipeline-steps">
+                    <div class="step" id="step-test">
+                        <div class="step-icon"><i class="fas fa-vial"></i></div>
+                        <div class="step-text">Tests Passed</div>
+                    </div>
+                    <div class="step" id="step-build">
+                        <div class="step-icon"><i class="fas fa-cog"></i></div>
+                        <div class="step-text">Build Successful</div>
+                    </div>
+                    <div class="step" id="step-deploy">
+                        <div class="step-icon"><i class="fas fa-rocket"></i></div>
+                        <div class="step-text">Auto Deployed</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Built with GitHub Actions CI/CD | 
+                <a href="#" id="repo-link">View Repository</a> | 
+                <a href="#" id="actions-link">View Workflow Runs</a>
+            </p>
+            <p class="build-info">
+                Build: <span id="build-number">#1</span> | 
+                Runner: <span id="runner-info">GitHub Actions</span>
+            </p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
