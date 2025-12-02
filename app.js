@@ -16,43 +16,39 @@ class WeatherDashboard {
     }
     
     getApiKey() {
-        console.log('🔑 Looking for API key...');
+        console.log('Looking for API key...');
         console.log('Config:', this.config);
         
         // 1. First try config (set by build process)
         if (this.config.apiKey && this.config.apiKey.length > 20) {
-            console.log('✅ Using API key from config');
+            console.log('Using API key from config');
             return this.config.apiKey;
         }
         
         // 2. Try localStorage (user saved)
         const savedKey = localStorage.getItem('weatherApiKey');
         if (savedKey && savedKey.length > 20) {
-            console.log('✅ Using API key from localStorage');
+            console.log('Using API key from localStorage');
             return savedKey;
         }
         
         // 3. No key found
-        console.log('⚠️ No API key found. Running in demo mode.');
-        console.log('ℹ️ Add your API key to .env file or enter it when prompted.');
+        console.log('No API key found. Running in demo mode.');
+        console.log('Add your API key to .env file or enter it when prompted.');
         return null;
     }
     
     init() {
-        console.log('🌤️ Weather Dashboard Initialized');
-        console.log('📍 Default city:', this.currentCity);
-        console.log('🔑 API key:', this.apiKey ? 'Available' : 'Not available (demo mode)');
+        console.log('Weather Dashboard Initialized');
+        console.log('Default city:', this.currentCity);
+        console.log('API key:', this.apiKey ? 'Available' : 'Not available (demo mode)');
         
-        // Get DOM elements
         this.getElements();
         
-        // Setup event listeners
         this.setupEvents();
         
-        // Load initial weather
         this.loadWeather();
         
-        // Check if we need to prompt for API key
         if (!this.apiKey && this.config.isLocal) {
             this.promptForApiKey();
         }
@@ -95,7 +91,7 @@ class WeatherDashboard {
     promptForApiKey() {
         setTimeout(() => {
             const key = prompt(
-                '🔑 Enter OpenWeatherMap API Key\n\n' +
+                'Enter OpenWeatherMap API Key\n\n' +
                 'Get a free key from:\nhttps://openweathermap.org/api\n\n' +
                 'Or click Cancel to use demo mode.'
             );
@@ -103,7 +99,7 @@ class WeatherDashboard {
             if (key && key.trim()) {
                 this.apiKey = key.trim();
                 localStorage.setItem('weatherApiKey', this.apiKey);
-                console.log('✅ API key saved to localStorage');
+                console.log('API key saved to localStorage');
                 this.showMessage('API key saved! Loading real weather data...', 'success');
                 this.loadWeather();
             }
@@ -126,7 +122,7 @@ class WeatherDashboard {
     
     async fetchRealWeather(city) {
         try {
-            console.log(`🌍 Fetching real weather for: ${city}`);
+            console.log(`Fetching real weather for: ${city}`);
             
             const response = await fetch(
                 `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=${this.units}&appid=${this.apiKey}`
@@ -196,23 +192,50 @@ class WeatherDashboard {
     updateForecastDisplay(data) {
         const container = this.elements.forecastContainer;
         if (!container) return;
-        
+
         container.innerHTML = '';
-        
-        // Show next 5 forecast entries
-        const forecasts = data.list?.slice(0, 5) || [];
-        
-        forecasts.forEach(item => {
-            const time = new Date(item.dt * 1000).toLocaleTimeString([], { hour: '2-digit' });
+
+        const days = {};
+
+        data.list.forEach(entry => {
+            const date = new Date(entry.dt * 1000);
+            const dayKey = date.toISOString().split('T')[0];
+
+            if (!days[dayKey]) days[dayKey] = [];
+            days[dayKey].push(entry);
+        });
+
+        const dayKeys = Object.keys(days).slice(0, 5);
+
+        dayKeys.forEach(dayKey => {
+            const entries = days[dayKey];
+
+            const temps = entries.map(e => e.main.temp);
+            const min = Math.round(Math.min(...temps));
+            const max = Math.round(Math.max(...temps));
+
+            let iconEntry = entries.find(e => {
+                const hour = new Date(e.dt * 1000).getHours();
+                return hour === 12;
+            }) || entries[0];
+
+            const iconCode = iconEntry.weather[0].icon;
+            const desc = iconEntry.weather[0].description;
+
+            const dayName = new Date(dayKey).toLocaleDateString([], {
+                weekday: 'short'
+            });
+
             const card = document.createElement('div');
             card.className = 'forecast-day';
             card.innerHTML = `
-                <div class="time">${time}</div>
-                <i class="fas ${this.getWeatherIcon(item.weather[0]?.icon)}" 
-                   style="color: ${this.getIconColor(item.weather[0]?.icon)}"></i>
-                <div class="temp">${Math.round(item.main.temp)}°C</div>
-                <div class="description">${item.weather[0]?.description || ''}</div>
+                <div class="time">${dayName}</div>
+                <i class="fas ${this.getWeatherIcon(iconCode)}"
+                style="color: ${this.getIconColor(iconCode)}"></i>
+                <div class="temp">${max}° / ${min}°</div>
+                <div class="description">${desc}</div>
             `;
+
             container.appendChild(card);
         });
     }
@@ -262,7 +285,6 @@ class WeatherDashboard {
         });
     }
     
-    // Helper methods (keep your existing ones)
     getCityTemperature(city) {
         const temps = { 'London': 15, 'Paris': 18, 'New York': 20, 'Tokyo': 22 };
         return temps[city] || 20;
@@ -280,20 +302,55 @@ class WeatherDashboard {
     
     getWeatherIcon(iconCode) {
         const iconMap = {
-            '01d': 'fa-sun', '02d': 'fa-cloud-sun', '03d': 'fa-cloud', '04d': 'fa-cloud',
-            '09d': 'fa-cloud-rain', '10d': 'fa-cloud-sun-rain', '11d': 'fa-bolt',
-            '13d': 'fa-snowflake', '50d': 'fa-smog'
+            '01d': 'fa-sun',
+            '01n': 'fa-moon',
+            '02d': 'fa-cloud-sun',
+            '02n': 'fa-cloud-moon',
+            '03d': 'fa-cloud',
+            '03n': 'fa-cloud',
+            '04d': 'fa-cloud',
+            '04n': 'fa-cloud',
+            '09d': 'fa-cloud-showers-heavy',
+            '09n': 'fa-cloud-showers-heavy',
+            '10d': 'fa-cloud-sun-rain',
+            '10n': 'fa-cloud-moon-rain',
+            '11d': 'fa-bolt',
+            '11n': 'fa-bolt',
+            '13d': 'fa-snowflake',
+            '13n': 'fa-snowflake',
+            '50d': 'fa-smog',
+            '50n': 'fa-smog'
         };
+
         return iconMap[iconCode] || 'fa-question';
     }
+
     
     getIconColor(iconCode) {
         const colorMap = {
-            '01d': '#f59e0b', '02d': '#fbbf24', '03d': '#94a3b8', '04d': '#64748b',
-            '09d': '#3b82f6', '10d': '#60a5fa', '11d': '#8b5cf6', '13d': '#93c5fd'
+            '01d': '#fbbf24',
+            '01n': '#60a5fa',
+            '02d': '#fcd34d',
+            '02n': '#93c5fd',
+            '03d': '#94a3b8',
+            '03n': '#64748b',
+            '04d': '#6b7280',
+            '04n': '#4b5563',
+            '09d': '#3b82f6',
+            '09n': '#2563eb',
+            '10d': '#60a5fa',
+            '10n': '#1e40af',
+            '11d': '#a78bfa',
+            '11n': '#8b5cf6',
+            '13d': '#93c5fd',
+            '13n': '#bfdbfe',
+            '50d': '#9ca3af',
+            '50n': '#6b7280'
         };
+
         return colorMap[iconCode] || '#4f46e5';
     }
+
     
     updateBackground(weatherType) {
         const gradientMap = {
