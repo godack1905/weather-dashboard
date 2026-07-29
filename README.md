@@ -22,12 +22,12 @@ The project includes a complete CI/CD pipeline with:
 ## View the Application
 
 The application is automatically deployed to: 
-`https://godack1905.github.io/weather-dashboard/`
+`https://isaiasvela.github.io/weather-dashboard/`
 
 ## View Workflow Runs
 
 Check the Actions tab to see all pipeline executions:
-`https://github.com/godack1905/weather-dashboard/actions`
+`https://github.com/isaiasvela/weather-dashboard/actions`
 
 ## Local Development
 
