@@ -12,7 +12,7 @@ A weather dashboard application with automated CI/CD pipeline using GitHub Actio
 
 ## CI/CD Pipeline
 
-The project includes a complete CI/CD pipeline with:
+The project includes a complete CI/CD pipeline with
 
 1. **Lint & Test** - Code quality checks and test execution
 2. **Build** - Package the application
